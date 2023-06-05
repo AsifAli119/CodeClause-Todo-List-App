@@ -1,6 +1,6 @@
 package com.example.todo.Model;
 
-public class ToDoModel {
+public class ToDoModel extends TaskId{
     private  String task, due;
     private int status;
 

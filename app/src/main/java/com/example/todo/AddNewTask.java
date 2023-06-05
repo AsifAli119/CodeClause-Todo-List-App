@@ -53,7 +53,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setDueDate = view.findViewById(R.id.dueTv);
+        setDueDate = view.findViewById(R.id.mDueDateTv);
         mtaskEdit = view.findViewById(R.id.task_edittext);
         mSaveBtn = view.findViewById(R.id.save_btn);
         firestore = FirebaseFirestore.getInstance();
