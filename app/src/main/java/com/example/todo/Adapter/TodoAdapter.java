@@ -1,5 +1,7 @@
 package com.example.todo.Adapter;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todo.AddNewTask;
 import com.example.todo.MainActivity;
 import com.example.todo.Model.ToDoModel;
 import com.example.todo.R;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.List;
 
@@ -33,12 +38,32 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         firestore = FirebaseFirestore.getInstance();
         return new MyViewHolder(view);
     }
+public void deleteTask(int position){
+        ToDoModel toDoModel = todolist.get(position);
+        firestore.collection("task").document(toDoModel.TaskId).delete();
+        todolist.remove(position);
+        notifyItemRemoved(position);
+}
+public Context getContext(){
+        return activity;
+}
+public void editTAsk(int position){
+        ToDoModel toDoModel = todolist.get(position);
+    Bundle bundle = new Bundle();
+    bundle.putString("task", toDoModel.getTask());
+    bundle.putString("due", toDoModel.getDue());
+    bundle.putString("id",toDoModel.TaskId);
 
+    AddNewTask addNewTask = new AddNewTask();
+    addNewTask.setArguments(bundle);
+    addNewTask.show(activity.getSupportFragmentManager(), addNewTask.getTag());
+
+}
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ToDoModel toDoModel = todolist.get(position);
         holder.mCheckBox.setText(toDoModel.getTask());
-        holder.mDueDateTv.setText("Due On" + toDoModel.getDue());
+        holder.mDueDateTv.setText("Due On : " + toDoModel.getDue());
 
         holder.mCheckBox.setChecked(toBoolean(toDoModel.getStatus()));
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
